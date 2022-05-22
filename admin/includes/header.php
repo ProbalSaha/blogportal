@@ -1,6 +1,12 @@
 <?php
 ob_start();
-include "../includes/db.php"
+
+include "../includes/db.php";
+session_start();
+if (empty( $_SESSION['email'])) {
+    header("Location:index.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

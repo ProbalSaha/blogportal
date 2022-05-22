@@ -18,13 +18,36 @@ include 'includes\topber.php';
                                             <div class="col-md-6">
                                                 <label class="form-label">Name</label>
                                                 <input type="text" class="form-control" name="name">
-                                                <label class="form-label">Email</label>
-                                                <input type="text" class="form-control" name="email">
-                                                <label class="form-label">Phone</label>
-                                                <input type="text" class="form-control" name="phone">
-                                               
+                                                
+                                                <label class="form-label">Password</label>
+                                                <input type="password" class="form-control" name="password">
+                                                <label class="form-label">Confirm Password</label>
+                                                <input type="password" class="form-control" name="confirmPass">
+
+                                                <label class="form-label">Is Active</label>
+                                                <select class="form-control" name="is_active">
+                                                    <option>Please Select The Active</option>
+                                                    <option value="0">In Active</option>
+                                                    <option value="1">Active</option>
+                                                </select>
+                                                <label class="form-label">User Role</label>
+                                              
+                                                <select class="form-control" name="role">
+                                                    <option>Please Select The User Role</option>
+                                                    <option value="0">Admin</option>
+                                                    <option value="1">Editor</option>
+                                                </select>
+
+
+
+                                             
                                             </div>
                                             <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input type="text" class="form-control" name="email">
+                                            <label class="form-label">Phone</label>
+                                            <input type="text" class="form-control" name="phone">
+                                               
                                             <label class="form-label">Profile Image</label>                               
                                             <input class="form-control-file" type="file" name="image"><br>
                                             <label class="form-label">Address</label>
@@ -38,6 +61,10 @@ include 'includes\topber.php';
                                         <?php
                                         if (isset($_POST['addUser'])) {
                                             $name               = $_POST['name'];
+                                            $password           = $_POST['password'];
+                                            $confirmPass        = $_POST['confirmPass'];
+                                            $is_active          = $_POST['is_active'];
+                                            $role               = $_POST['role'];
                                             $email              = $_POST['email'];
                                             $phone              = $_POST['phone'];
                                             $address            = $_POST['address'];
@@ -55,17 +82,23 @@ include 'includes\topber.php';
                                             {
                                                 $user_image =rand(0,10000) .'_'. $user_image_name;
                                                 move_uploaded_file($user_image_temp, "$location_img/$user_image");
+                                                if ($password ==  $confirmPass ) {
 
-                                                $query="INSERT INTO users (name, email, phone, address, image, join_date) VALUES ('$name','$email','$phone','$address','$user_image', now())";
+                                                    $hashPass= sha1($password);
+
+                                                    $query="INSERT INTO users (name, password, is_active, role, email, phone, address, image, join_date) VALUES ('$name', '$hashPass', '$is_active','$role','$email','$phone','$address','$user_image', now())";
                                                 
-                                                $addUser= mysqli_query($connect, $query);
-                                
-                                                if ($addUser) {
-                                                    header('Location:all_users.php');
+                                                    $addUser= mysqli_query($connect, $query);
+                                    
+                                                    if ($addUser) {
+                                                        header('Location:all_users.php');
+                                                    }
+                                                    else {
+                                                        die("User Added Failed!". mysqli_error($connect));
+                                                    }
                                                 }
-                                                else {
-                                                    die("User Added Failed!". mysqli_error($connect));
-                                                }
+
+                                               
                                             }
                                         }
                                     ?>

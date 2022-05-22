@@ -60,6 +60,7 @@ include 'includes\topber.php';
                                             $title              = $_POST['title'];
                                             $status             = $_POST['status'];
                                             $category           = $_POST['category'];
+                                            $author             = $_SESSION['name'] ;
                                             $tags               = $_POST['tags'];
                                             $post_description   = $_POST['post_description'];
                                             $location_img       = "assets/img/posts";
@@ -77,7 +78,7 @@ include 'includes\topber.php';
                                                 $post_image =rand(0,10000) .'_'. $post_image_name;
                                                 move_uploaded_file($post_image_temp, "$location_img/$post_image");
 
-                                                $query="INSERT INTO posts (title, author, status, post_description, category, tags, image, post_date) VALUES ('$title','Dipta','$status','$post_description' ,'$category','$tags','$post_image', now())";
+                                                $query="INSERT INTO posts (title, author, status, post_description, category, tags, image, post_date) VALUES ('$title','$author','$status','$post_description' ,'$category','$tags','$post_image', now())";
                                                 
                                                 $addpost= mysqli_query($connect, $query);
                                 
